@@ -1,0 +1,3 @@
+MasterLabel,DeveloperName,LogLevel__c,LogViaEvents__c,LogViaObject__c,LogViaSystemDebug__c,Mute__c
+System Default,System,DEBUG,true,true,true,false
+UserID_89734982379827,System,DEBUG,true,true,true,false
