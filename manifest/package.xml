@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Log</members>
+        <members>Log_Test</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>logMonitor</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Log__e</members>
+        <members>LogEntry__c</members>
+        <members>LogSetting__mdt</members>
+        <name>CustomObject</name>
+    </types>
+      <types>
+        <members>LogEntry__c</members>
+        <name>CustomTab</name>
+    </types>
+        CustomTab
+    <version>52.0</version>
+</Package>
