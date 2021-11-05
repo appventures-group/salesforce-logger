@@ -22,7 +22,7 @@ Use "Make Log Entry" apex action and provide the following input
 
 - Flow Guid: Always set this {!$Flow.InterviewGuid}. This will be logged in to source. 
 - Level: Use one of the supported log levels. Thes values are same as Apex LoggingLevel Enum, but as string. 
-- Messaga: Message to be logged.
+- Message: Message to be logged.
 
 # Enable / Disable Logging
 
