@@ -21,7 +21,7 @@
         <name>CustomTab</name>
     </types>
     <types>
-        <members>Log_Monitor__c</members>
+        <members>Log_Monitor</members>
         <name>CustomApplication</name>
     </types>
       <types>
