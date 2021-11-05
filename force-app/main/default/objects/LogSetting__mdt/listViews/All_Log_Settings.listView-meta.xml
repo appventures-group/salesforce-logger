@@ -6,6 +6,8 @@
     <columns>LogViaEvents__c</columns>
     <columns>LogViaObject__c</columns>
     <columns>LogViaSystemDebug__c</columns>
+    <columns>LogLevel__c</columns>
+    <columns>Mute__c</columns>
     <filterScope>Everything</filterScope>
     <label>All Log Settings</label>
     <language>en_US</language>

@@ -24,25 +24,28 @@ public without sharing class Log {
 
 	// Public logging methods
     public void error(Object message) {
-        emit(LoggingLevel.ERROR, message);
+        emit(LoggingLevel.ERROR, message, null);
 	}
     public void warn(Object message) {
-        emit(LoggingLevel.WARN, message);
+        emit(LoggingLevel.WARN, message, null);
 	}
     public void info(Object message) {
-        emit(LoggingLevel.INFO, message);
+        emit(LoggingLevel.INFO, message, null);
 	}
 	public void debug(Object message) {
-        emit(LoggingLevel.DEBUG, message);
+        emit(LoggingLevel.DEBUG, message, null);
 	}
     public void fine(Object message) {
-        emit(LoggingLevel.FINE, message);
+        emit(LoggingLevel.FINE, message, null);
 	}
     public void finer(Object message) {
-        emit(LoggingLevel.FINER, message);
+        emit(LoggingLevel.FINER, message, null);
 	}
     public void finest(Object message) {
-        emit(LoggingLevel.FINEST, message);
+        emit(LoggingLevel.FINEST, message, null);
+	}
+    public void put(LoggingLevel level, Object message, String source) {
+        emit(level, message, 'Flow - ' + source);
 	}
 
     //Control Methods
@@ -60,7 +63,7 @@ public without sharing class Log {
 	/**
      * Actual log entry is made by this method depending on settings.  
      */ 
-	private void emit(LoggingLevel level, Object message) {
+	private void emit(LoggingLevel level, Object message, String source) {
         //Return, if muted. 
         if(mute) {
             return;
@@ -70,7 +73,7 @@ public without sharing class Log {
             return;
         }
         // Resolve Apex Source code details where log is invoked from. 
-        String sourcePointer =  getSourcePointer();
+        String sourcePointer =  source == null? getSourcePointer() : source;
 
         //Log to platform event, when enabled.
 		if(logViaEvents) {
