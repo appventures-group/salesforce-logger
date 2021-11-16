@@ -5,26 +5,26 @@ A lightweght logging framework for Salesforce platform with ability to log to mu
 # Emulates System.debug
 Stop worrying if to use System.debut of Logger as this logger fully emulates System.debug inaddition to making the log entries into other streams. By default, framework is enabled to emulate System.debug with no settings. However, make sure that you set "Enable System Debug" for respective setting to continue applying this behaviour. 
 
-# How to use it?
+# How to use it
 Log framework provides interface to used in Apex and Flow. 
 
 ## Apex
 Use following methods Apex code. All formats of message structure is supported as long as it can fit into String.valueOf(message), which is similar to System.debug capabilities. 
 
 ```
-- Logger.error(message);
-- Logger.warn(message);
-- Logger.info(message);
-- Logger.debug(message);
-- Logger.fine(message);
-- Logger.finer(message);
-- Logger.finest(message);
+Logger.error(message);
+Logger.warn(message);
+Logger.info(message);
+Logger.debug(message);
+Logger.fine(message);
+Logger.finer(message);
+Logger.finest(message);
 ```
 
 and finally close your module code with -  
 
 ```
-- Logger.flush(); 
+Logger.flush(); 
 ```
 
 Note: Keeping too many log entries in memory may cause memory heap issues. Hence, balancing between flush and number of entries in memory is key to acheive optimal performance, especially in ERROR mode as production mode ideally is set at ERROR log level. 
@@ -33,28 +33,28 @@ Note: Keeping too many log entries in memory may cause memory heap issues. Hence
 
 Use "Make Log Entry" apex action and provide the following input
 
-- **Source**: Set this to source identifier that gets stamped in log entries. Salesforce does not support dynamic declartative tool developer names, hence this is provided to developer to have controle on tagging source identifier. 
-- **Level**: Use one of the supported log levels. Thes values are same as Apex LoggingLevel Enum, as string. 
-- **Message**: Message to be logged.
-- **Flush Now**: Any events in memory for now will be flushed. Especially useful to set this to true on the last log entry in a flow. 
-- **Force Flush** : Flush now above will not flush logs when defer flushing is enabled previously by any apex code executed with in this transaction. Force Flush comes to rescue to override defer and keep flushing.  
+  - **Source**: Set this to source identifier that gets stamped in log entries. Salesforce does not support dynamic declartative tool developer names, hence this is provided to developer to have controle on tagging source identifier. 
+  - **Level**: Use one of the supported log levels. Thes values are same as Apex LoggingLevel Enum, as string. 
+  - **Message**: Message to be logged.
+  - **Flush Now**: Any events in memory for now will be flushed. Especially useful to set this to true on the last log entry in a flow. 
+  - **Force Flush** : Flush now above will not flush logs when defer flushing is enabled previously by any apex code executed with in this transaction. Force Flush comes to rescue to override defer and keep flushing.  
 
 # Enable / Disable Logging
 
 Enable disable logging via custom metadata records. If no metadata is defined this framework emulates System.debug behavour.  Logging configuraiton can be set at there levels. 
-- **Org Level** : Metadata record developer name is 'System'
-- **Profile Level**: Metadata record developer name is expected as 'ProfileId_<Profile Record Id>'
-- **User Level**: Metadata record developer name is expected as 'UserId_<User Record Id>'
+  - **Org Level** : Metadata record developer name is 'System'
+  - **Profile Level**: Metadata record developer name is expected as 'ProfileId_<Profile Record Id>'
+  - **User Level**: Metadata record developer name is expected as 'UserId_<User Record Id>'
 
 First available settings will be used in the following order to the current context.  
 - User Level -> Profile Level -> System Level --> Default behaviour.  
 
 There are different settings for each of these settings and following are the explanations for these attributes. 
-- **Log Level** : Applicalbe runtime log level for this run time context
-- **Mute**: Enable or disable mute upon logger initilization for each transaction in this context. 
-- **Enable Events**: Generate platform events for this run time context. 
-- **Enable OBject**: Generate Custom Object Records for this runt time context
-- **Enable System Debug**: Emulate System.debug for Logger statements. 
+  - **Log Level** : Applicalbe runtime log level for this run time context
+  - **Mute**: Enable or disable mute upon logger initilization for each transaction in this context. 
+  - **Enable Events**: Generate platform events for this run time context. 
+  - **Enable OBject**: Generate Custom Object Records for this runt time context
+  - **Enable System Debug**: Emulate System.debug for Logger statements. 
 
 # Pause and Resume Logging
 In some scenarios, a developer may want to pause logging by reused capabilities as it is working and only like to enable logging
@@ -66,13 +66,13 @@ Here comes pause and resume logging functions.
 Any logger statements after this until resume is invoked will be ignored and no logging will be made.
 
 ```
-- Logger.pause()
+Logger.pause()
 ```
 
 Resume logging 
 
 ```
-- Logger.resume()
+Logger.resume()
 ```
 
 # Defer and Keep Flushing
@@ -81,12 +81,12 @@ Each module us generally expected to enable its own logging and flush at the end
 Defer flushing - once this is invokde any flush() statements are ignored until keepFlusing is invoked or forceFlush is set to true by flow. 
 
 ```
-- Logger.deferFlushing()
+Logger.deferFlushing()
 ```
 
 Stop defering and respect flush() statements. Please note that this does not trigger implicit flushing and is expected to call flush() after this if the expectation is to flush logs.  
 ```
-- Logger.keepFlushing()
+Logger.keepFlushing()
 ```
 
 # View and Manage Logs

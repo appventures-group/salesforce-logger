@@ -1,4 +1,4 @@
-import { LightningElement, track } from "lwc";
+import { LightningElement } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { subscribe, unsubscribe, onError } from "lightning/empApi";
 import userId from "@salesforce/user/Id";
