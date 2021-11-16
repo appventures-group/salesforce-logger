@@ -1,22 +1,25 @@
+/**
+ * Test class for core logging framework
+ */
 @IsTest
-public with sharing class Log_Test {
+public with sharing class Logger_Test {
     @IsTest
 	private static void testAllLogLevels() {
-        Log.me().error('ERROR Message');
-        Log.me().warn('WARN Message');
-        Log.me().info('INFO Message');
-        Log.me().debug('DEBUG Message');
-        Log.me().pause();
-        Log.me().debug('This will not be logged');
-        Log.me().fine('This wioll not be logged');
-        Log.me().resume();
-        Log.me().fine('FINE Message');
-        Log.me().finer('FINER Message');
-        Log.me().finest('FINEST Message');
+        Logger.error('ERROR Message');
+        Logger.warn('WARN Message');
+        Logger.info('INFO Message');
+        Logger.debug('DEBUG Message');
+        Logger.pause();
+        Logger.debug('This will not be logged');
+        Logger.fine('This will not be logged');
+        Logger.resume();
+        Logger.fine('FINE Message');
+        Logger.finer('FINER Message');
+        Logger.finest('FINEST Message');
         
         Integer logCount = [SELECT COUNT() FROM LogEntry__c];
         Integer expectedLogCount = 0;
-        LoggingLevel currentLogLevel = Log.me().getCurrentLogLevel();
+        LoggingLevel currentLogLevel = Logger.getCurrentLogLevel();
         switch on currentLogLevel {
             when ERROR {
                 expectedLogCount = 1;
@@ -44,5 +47,5 @@ public with sharing class Log_Test {
             }
         }
         System.assertEquals(expectedLogCount, logCount, 'Expected log messages count does not match with actual' + logCount);
-    }        
+    }       
 }

@@ -99,7 +99,7 @@ export default class LogMonitor extends LightningElement {
         const log = message.data.payload;
         if(log.User__c === userId) {
             const timeFormat = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
-            log.time = new Intl.DateTimeFormat(locale, timeFormat).format(new Date(log.CreatedDate));
+            log.time = new Intl.DateTimeFormat(locale, timeFormat).format(new Date(log.CreatedTime__c));
       
             const RequestId__c = log.RequestId__c;
             this.logs[RequestId__c] = this.logs[RequestId__c] || [];

@@ -3,11 +3,11 @@
     <fullName>All_Log_Settings</fullName>
     <columns>DeveloperName</columns>
     <columns>MasterLabel</columns>
-    <columns>LogViaEvents__c</columns>
-    <columns>LogViaObject__c</columns>
-    <columns>LogViaSystemDebug__c</columns>
     <columns>LogLevel__c</columns>
     <columns>Mute__c</columns>
+    <columns>writeToEvent__c</columns>
+    <columns>writeToObject__c</columns>
+    <columns>writeToSystemDebug__c</columns>
     <filterScope>Everything</filterScope>
     <label>All Log Settings</label>
     <language>en_US</language>

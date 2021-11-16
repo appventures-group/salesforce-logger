@@ -1,4 +1,4 @@
-# Salesforce Log.me()
+# Salesforce Logger
 
 A lightweght logging framework for Salesforce platform with ability to log to multiple streams (custom object, platform event, system debug) supporting all salesforce LoggingLevels. Framework provides ability to enable logging at system, profile and individual user level to be able to collect logs from environments with heavy load to be able to debug the functionality. Log entries can be made with any declarative tools support invocable action (any declarative tool runs on Flow infrastructure) in addition to apex.
 
@@ -8,20 +8,23 @@ Log framework provides interface to used in Apex and Flow.
 ## Apex
 Use following methods Apex code. All formats of message structure is supported as long as it can fit into String.valueOf(message), which is similar to System.debug capabilities. 
 
-- Log.me().error(message);
-- Log.me().warn(message);
-- Log.me().info(message);
-- Log.me().debug(message);
-- Log.me().fine(message);
-- Log.me().finer(message);
-- Log.me().finest(message);
+- Logger.error(message);
+- Logger.warn(message);
+- Logger.info(message);
+- Logger.debug(message);
+- Logger.fine(message);
+- Logger.finer(message);
+- Logger.finest(message);
+
+
+and finally add a Logger.flush();
 
 ## Flows
 
 Use "Make Log Entry" apex action and provide the following input
 
-- **Flow Guid**: Always set this {!$Flow.InterviewGuid}. This will be logged in to source. 
-- **Level**: Use one of the supported log levels. Thes values are same as Apex LoggingLevel Enum, but as string. 
+- **Source**: Set this to source identifier that gets stamped in log entries. Salesforce does not support dynamic declartative tool developer names, hence this is provided to developer to have controle on tagging source identifier. 
+- **Level**: Use one of the supported log levels. Thes values are same as Apex LoggingLevel Enum, as string. 
 - **Message**: Message to be logged.
 
 # Enable / Disable Logging

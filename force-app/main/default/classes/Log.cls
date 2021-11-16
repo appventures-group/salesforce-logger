@@ -1,117 +1,114 @@
+/**
+ * This Action class provides core loggign framework and publich methods. 
+ * 
+ * Note: All the ApexCRUDViolation rules are explicitly turned off intententionally
+ */
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class Log {
     private static Log instance = null;
-
-	private static Log__e currentEvent = null;
-
-    private static LogEntry__c currentRecord = null;
-
     private static final Pattern STACK_LINE = Pattern.compile('^(?:Class\\.)?([^.]+)\\.?([^\\.\\:]+)?[\\.\\:]?([^\\.\\:]*): line (\\d+), column (\\d+)$');
+    
+	//private static Log__e currentEvent = null;
+
+    //private static LogEntry__c currentRecord = null;
+
+    private List<Map<String,Object>> logEntries = new List<Map<String,Object>>();
 
     //Logger Dynamic Controls
-    private Boolean mute {get; set;}
+    public Boolean mute {get; set;}
+    public LoggingLevel currentLogLevel {get; set;}
+
     private Boolean logViaEvents {get; set;}
     private Boolean logViaObject {get; set;}
     private Boolean logViaSystemDebug {get; set;}
-    private LoggingLevel currentLogLevel {get; set;}
-    /**
-     * Constructor reads the MDT settings for current user if found and sets the log levels. If not found
-     * System setings are read from "Org" developer name. If not found then only System debug behaviour is
-     * emulated.
-     */
+
+    private Boolean writeToEvent {get; set;}
+    private Boolean writeToObject {get; set;}
+    private Boolean writeToSystemDebug {get; set;}
+
     public Log() {
         loadLogSettings();
     }
 
-	// Public logging methods
-    public void error(Object message) {
-        emit(LoggingLevel.ERROR, message, null);
-	}
-    public void warn(Object message) {
-        emit(LoggingLevel.WARN, message, null);
-	}
-    public void info(Object message) {
-        emit(LoggingLevel.INFO, message, null);
-	}
-	public void debug(Object message) {
-        emit(LoggingLevel.DEBUG, message, null);
-	}
-    public void fine(Object message) {
-        emit(LoggingLevel.FINE, message, null);
-	}
-    public void finer(Object message) {
-        emit(LoggingLevel.FINER, message, null);
-	}
-    public void finest(Object message) {
-        emit(LoggingLevel.FINEST, message, null);
-	}
     public void put(LoggingLevel level, Object message, String source) {
-        emit(level, message, 'Flow - ' + source);
+        if(source != null) {
+            emit(level, message, 'NonApex - ' + source);
+        } else {
+            emit(level, message, null);
+        }
 	}
-
-    //Control Methods
-    public void pause() {
-        mute = true;
-    }
-    public void resume() {
-        mute = false;
-    }
-	
-    public LoggingLevel getCurrentLogLevel() {
-        return currentLogLevel;
-    }
 
 	/**
      * Actual log entry is made by this method depending on settings.  
      */ 
 	private void emit(LoggingLevel level, Object message, String source) {
-        //Return, if muted. 
-        if(mute) {
-            return;
-        }
-        // Don't log if current log level is set to lower than requested log level.
-        if(currentLogLevel.ordinal() > level.ordinal()) {
-            return;
-        }
-        // Resolve Apex Source code details where log is invoked from. 
-        String sourcePointer =  source == null? getSourcePointer() : source;
-
-        //Log to platform event, when enabled.
-		if(logViaEvents) {
-			currentEvent = new Log__e();
-			currentEvent.User__c = UserInfo.getUserId();
-            currentEvent.Level__c = level.name() ;
-            currentEvent.Quiddity__c = Request.getCurrent().getQuiddity().name();
-            currentEvent.RequestId__c = Request.getCurrent().getRequestId();
-			currentEvent.Message__c = String.valueOf(message);
-            currentEvent.Source__c = sourcePointer;
-
-            System.debug(LoggingLevel.DEBUG, 'publishing message ' + currentEvent);
-            Database.SaveResult result = EventBus.publish(currentEvent);
-            if (!result.isSuccess()) {
-                System.debug(LoggingLevel.ERROR, 'Error returned: ' + result.getErrors());
-            }
-		}
-
-        //Log to custom object, when enabled.
-        if(logViaObject) {
-            currentRecord = new LogEntry__c();
-            currentRecord.User__c = UserInfo.getUserId();
-            currentRecord.Level__c = level.name();
-            currentRecord.Quiddity__c = Request.getCurrent().getQuiddity().name();
-            currentRecord.RequestId__c = Request.getCurrent().getRequestId();
-			currentRecord.Message__c = String.valueOf(message);
-            currentRecord.Source__c = sourcePointer;
-
-            insert currentRecord;
-        }
-
         //Log to System Debug, when enabled.
-        if (logViaSystemDebug) {
-			System.debug(level, message);
-		}
+        if (writeToSystemDebug) {
+            System.debug(level, message);
+        }
+
+        //Return, if muted. 
+        // Don't log if current log level is set to lower than requested log level.
+         //No need to cache log events when no logging is enabled.
+        if(mute 
+            || (currentLogLevel.ordinal() > level.ordinal())
+            || (!writeToEvent && !writeToObject)) {
+            return;
+        }
+
+        // Resolve Apex Source code details where log is invoked from. 
+        Map<String, Object> newLogEntry = new Map<String, Object>();
+
+        newLogEntry.put('User__c', UserInfo.getUserId());
+        newLogEntry.put('Level__c', level.name());
+        newLogEntry.put('Quiddity__c', Request.getCurrent().getQuiddity().name());
+        newLogEntry.put('RequestId__c', Request.getCurrent().getRequestId());
+        newLogEntry.put('Message__c', String.valueOf(message));
+        newLogEntry.put('Source__c', source == null? getSourcePointer() : source);
+        newLogEntry.put('CreatedTime__c', System.now());
+        logEntries.add(newLogEntry);
 	}
 
-    @TestVisible
+    /**
+     * Flush out the log entries from memory to platform events and / or custom object
+     */
+    public void flush() {
+        List<Log__e> listOfLogEvents = new List<Log__e>();
+        List<LogEntry__c> listOfLogEntryObjects = new List<LogEntry__c>();
+
+        for(Map<String, Object> cEntry : logEntries) {
+            if(writeToEvent) {
+                listOfLogEvents.add(new Log__e(
+                    User__c = (String)cEntry.get('User__c'),
+                    Level__c = (String)cEntry.get('Level__c'),
+                    Quiddity__c = (String)cEntry.get('Quiddity__c'),
+                    RequestId__c = (String)cEntry.get('RequestId__c'),
+                    Message__c = (String)cEntry.get('Message__c'),
+                    Source__c = (String)cEntry.get('Source__c'),
+                    CreatedTime__c = (DateTime)cEntry.get('CreatedTime__c')
+                ));
+            } 
+            if(writeToObject) {
+                listOfLogEntryObjects.add(new LogEntry__c(
+                    User__c = (String)cEntry.get('User__c'),
+                    Level__c = (String)cEntry.get('Level__c'),
+                    Quiddity__c = (String)cEntry.get('Quiddity__c'),
+                    RequestId__c = (String)cEntry.get('RequestId__c'),
+                    Message__c = (String)cEntry.get('Message__c'),
+                    Source__c = (String)cEntry.get('Source__c'),
+                    CreatedTime__c = (DateTime)cEntry.get('CreatedTime__c')
+                ));
+            }
+        }
+        if(listOfLogEvents.size() > 0) { EventBus.publish(listOfLogEvents); }
+        if(listOfLogEntryObjects.size() > 0) { insert listOfLogEntryObjects; }
+    }
+    /**
+     * Reads the MDT settings for current user if found and sets the log levels. If not found
+     * System setings are read from "System" developer name. 
+     * 
+     * If no setings are found then System.debug behaviour is emulated.
+     */
     private void loadLogSettings() {
         LogSetting__mdt logSettings = LogSetting__mdt.getInstance('UserId_' + UserInfo.getUserId());
         if(logSettings == null) {
@@ -121,9 +118,9 @@ public without sharing class Log {
             logSettings = LogSetting__mdt.getInstance('System');
         }
         mute = logSettings != null ? logSettings.Mute__c : false;
-        logViaEvents = logSettings != null ? logSettings.LogViaEvents__c : false;
-        logViaObject = logSettings != null ? logSettings.LogViaObject__c : false;
-        logViaSystemDebug = logSettings != null ? logSettings.LogViaSystemDebug__c : true;
+        writeToEvent = logSettings != null ? logSettings.writeToEvent__c : false;
+        writeToObject = logSettings != null ? logSettings.writeToObject__c : false;
+        writeToSystemDebug = logSettings != null ? logSettings.writeToSystemDebug__c : true;
         //Note - Finest log level enables it to reach system debug.
         currentLogLevel = logSettings != null ? LoggingLevel.valueOf(logSettings.LogLevel__c) : LoggingLevel.FINEST; 
     }
@@ -137,7 +134,7 @@ public without sharing class Log {
 		List<String> stacktrace = new DmlException().getStackTraceString().split('\n');
 		for(String line : stacktrace) {
 			Matcher matcher = STACK_LINE.matcher(line);
-			if(matcher.find() && !line.startsWith('Class.Log.')) {
+			if(matcher.find() && !line.startsWith('Class.Log.') && !line.startsWith('Class.Logger.')) {
 				Boolean hasNamespace = String.isNotBlank(matcher.group(3));
 				if(hasNamespace) {
                     //namespace.className.methodName

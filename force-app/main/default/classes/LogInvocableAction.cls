@@ -15,11 +15,11 @@ public with sharing class LogInvocableAction {
                     description='Creates a log entry using log.me() library' 
                     category='Pre Provisioning')
     public static void makeLogEntry(List<Request> requestList) {
-        Log.me().put(LoggingLevel.valueOf(requestList[0].level), requestList[0].message, requestList[0].flowGuid);
+        Log.me().put(LoggingLevel.valueOf(requestList[0].level), requestList[0].message, requestList[0].source);
     }
     public class Request {
-        @InvocableVariable(label='Flow Guid' description='Pass {!$Flow.InterviewGuid}' required='true')
-        public String flowGuid;
+        @InvocableVariable(label='Source' description='Uniquely tracable developer name here - for exampel flow developer name' required='true')
+        public String source;
         @InvocableVariable(label='Log Level' description='Enter on of the supported log levels. Refer to LoggingLevel for valid values.')
         public String level;
         @InvocableVariable(label='Message' description='Message to be logged')

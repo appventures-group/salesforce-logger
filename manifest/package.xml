@@ -2,9 +2,12 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>Log</members>
-        <members>Log_Test</members>
+        <members>Logger</members>
+        <members>Logger_Test</members>
         <members>LogInvocableAction</members>
         <members>LogInvocableAction_Test</members>
+        <members>LogCleanupBatch</members>
+        <members>LogCleanupSchedulable</members>
         <name>ApexClass</name>
     </types>
     <types>
