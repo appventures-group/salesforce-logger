@@ -105,3 +105,8 @@ This permission allows access to all log entries and live stream of platform eve
 ## Log Entries Records
  
 ![image](https://user-images.githubusercontent.com/3853657/140729695-446cf8c1-6d31-4348-baaf-727a89403488.png)
+
+# Credits
+I have referenced multiple logging framework to pull this framework together. 
+- I have used custom LWC to monitor platform events from [Apex Unified Logging framework](https://github.com/rsoesemann/apex-unified-logging) and enhanced to add some features. 
+- Some of the features are inspired by [Nebula Logger](https://github.com/jongpie/NebulaLogger)
