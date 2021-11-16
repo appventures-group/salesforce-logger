@@ -63,6 +63,7 @@ There are different settings for each of these settings and following are the ex
 - **Retention Period (Days)**: This is only relevant for System custom metadata record. If it is not set or System metadata record missing, the default value is 7.
 
 ## Pause and Resume Logging
+
 In some scenarios, a developer may want to pause logging by reused capabilities as it is working and only like to enable logging
 for new code bering developed. I some other cases, you may need to avoid logging as using some functionality in batch processing
 can not scale as it makes large data entries when single record functionality is invoked by batch process. 
@@ -106,11 +107,11 @@ This permission allows access to all log entries and live stream of platform eve
   
 ### Log Monitor from Platform Events Stream
 
-![image](https://user-images.githubusercontent.com/3853657/140729510-e0241aaa-dad3-4a5d-9e5f-40b771e2add4.png)
+![image](https://user-images.githubusercontent.com/3853657/142072618-7105b3ce-a4f7-457b-a9a3-d1a7767d111f.png)
   
 ### Log Entries Records
  
-![image](https://user-images.githubusercontent.com/3853657/140729695-446cf8c1-6d31-4348-baaf-727a89403488.png)
+![image](https://user-images.githubusercontent.com/3853657/142072767-6a0c4bca-0655-4f77-8d4e-d211b9f2f71b.png)
 
 ## Credits
 I have referenced multiple logging framework to pull this framework together. 
