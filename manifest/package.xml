@@ -30,6 +30,10 @@
         <members>Log_Monitor</members>
         <name>FlexiPage</name>
     </types>
+        <types>
+        <members>LogSetting__mdt-LogSetting Layout</members>
+        <name>Layout</name>
+    </types>
     <types>
         <members>Log_Monitor</members>
         <name>CustomApplication</name>
