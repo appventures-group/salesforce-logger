@@ -58,8 +58,9 @@ There are different settings for each of these settings and following are the ex
 - **Log Level** : Applicalbe runtime log level for this run time context
 - **Mute**: Enable or disable mute upon logger initilization for each transaction in this context. 
 - **Enable Events**: Generate platform events for this run time context. 
-- **Enable OBject**: Generate Custom Object Records for this runt time context
+- **Enable Object**: Generate Custom Object Records for this runt time context
 - **Enable System Debug**: Emulate System.debug for Logger statements. 
+- **Retention Period (Days)**: This is only relevant for System custom metadata record. If it is not set or System metadata record missing, the default value is 7.
 
 ## Pause and Resume Logging
 In some scenarios, a developer may want to pause logging by reused capabilities as it is working and only like to enable logging
