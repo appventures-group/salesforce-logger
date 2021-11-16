@@ -25,22 +25,31 @@ public without sharing class Logger {
         Log.me().put(LoggingLevel.FINEST, message, null);
 	}
 
+    // Pubish and/or write inmemory log objects to event bus and/or database 
     public static void flush() {
         Log.me().flush();
     }
     
-    //Control Methods
+    //Pause logging, any log entries after this will be ignored until resumed.
     public static void pause() {
-        //Log.me().pause();
         Log.me().mute=true;
     }
+    //Resumes logging.
     public static void resume() {
-        //Log.me().resume();
         Log.me().mute = false;
     }
+
+    //Defers flushing, means any flush statements are ignored until keepFlushing is invoked. 
+    public static void deferFlushing() {
+        Log.me().muteFlush = true;
+    }
+    //Start to respect flush statements, if previously defered. 
+    public static void keepFlushing() {
+        Log.me().muteFlush = false;
+    }
 	
+    //Returns the current loggin level.
     public static LoggingLevel getCurrentLogLevel() {
-        //return Log.me().getCurrentLogLevel();
         return Log.me().currentLogLevel;
     }
 }

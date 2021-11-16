@@ -16,6 +16,7 @@ public without sharing class Log {
 
     //Logger Dynamic Controls
     public Boolean mute {get; set;}
+    public Boolean muteFlush {get; set;}
     public LoggingLevel currentLogLevel {get; set;}
 
     private Boolean writeToEvent {get; set;}
@@ -44,8 +45,8 @@ public without sharing class Log {
         }
 
         //Return, if muted. 
-        // Don't log if current log level is set to lower than requested log level.
-         //No need to cache log events when no logging is enabled.
+        //Don't log if current log level is set to lower than requested log level.
+        //No need to log when no logging is enabled.
         if(mute 
             || (currentLogLevel.ordinal() > level.ordinal())
             || (!writeToEvent && !writeToObject)) {
@@ -69,6 +70,11 @@ public without sharing class Log {
      * Flush out the log entries from memory to platform events and / or custom object
      */
     public void flush() {
+        //Flushing can be paused to control all log enries are published at once 
+        //When a complex transaction is invoking other transacdtions to save DMLs.
+        if(muteFlush) {
+            return;
+        }
         List<Log__e> listOfLogEvents = new List<Log__e>();
         List<LogEntry__c> listOfLogEntryObjects = new List<LogEntry__c>();
 
@@ -113,6 +119,7 @@ public without sharing class Log {
         if(logSettings == null) {
             logSettings = LogSetting__mdt.getInstance('System');
         }
+        muteFlush = false;
         mute = logSettings != null ? logSettings.Mute__c : false;
         writeToEvent = logSettings != null ? logSettings.writeToEvent__c : false;
         writeToObject = logSettings != null ? logSettings.writeToObject__c : false;
