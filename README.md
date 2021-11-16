@@ -21,13 +21,13 @@ Use following methods Apex code. All formats of message structure is supported a
 - Logger.finest(message);
 ```
 
-and finally add a 
+and finally close your module code with -  
 
 ```
 - Logger.flush(); 
 ```
 
-at the end of apex logic to save logs as per configuration. 
+Note: Keeping too many log entries in memory may cause memory heap issues. Hence, balancing between flush and number of entries in memory is key to acheive optimal performance, especially in ERROR mode as production mode ideally is set at ERROR log level. 
 
 ## Flows
 
