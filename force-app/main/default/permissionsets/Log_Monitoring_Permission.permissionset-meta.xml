@@ -66,4 +66,12 @@
         <object>LogEntry__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>LogEntry__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Log_Monitor</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>

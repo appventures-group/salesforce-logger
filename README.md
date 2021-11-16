@@ -7,6 +7,8 @@
 
 A lightweght logging framework for Salesforce platform with ability to log to multiple streams (custom object, platform event, system debug) supporting all salesforce LoggingLevels. Framework provides ability to enable logging at system, profile and individual user level to be able to collect logs from environments with heavy load to be able to debug the functionality. Log entries can be made with any declarative tools support invocable action (any declarative tool runs on Flow infrastructure) in addition to apex.
 
+Note: I am still updating this README file with all instructions. Please excuse for types or any errors.
+
 ## Emulates System.debug
 Stop worrying if to use System.debut of Logger as this logger fully emulates System.debug inaddition to making the log entries into other streams. By default, framework is enabled to emulate System.debug with no settings. However, make sure that you set "Enable System Debug" for respective setting to continue applying this behaviour. 
 
