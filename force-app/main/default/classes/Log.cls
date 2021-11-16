@@ -18,10 +18,6 @@ public without sharing class Log {
     public Boolean mute {get; set;}
     public LoggingLevel currentLogLevel {get; set;}
 
-    private Boolean logViaEvents {get; set;}
-    private Boolean logViaObject {get; set;}
-    private Boolean logViaSystemDebug {get; set;}
-
     private Boolean writeToEvent {get; set;}
     private Boolean writeToObject {get; set;}
     private Boolean writeToSystemDebug {get; set;}
@@ -32,7 +28,7 @@ public without sharing class Log {
 
     public void put(LoggingLevel level, Object message, String source) {
         if(source != null) {
-            emit(level, message, 'NonApex - ' + source);
+            emit(level, message, 'NonApex:' + source);
         } else {
             emit(level, message, null);
         }
@@ -138,11 +134,11 @@ public without sharing class Log {
 				Boolean hasNamespace = String.isNotBlank(matcher.group(3));
 				if(hasNamespace) {
                     //namespace.className.methodName
-                    sourcePointer = 'Apex - ' + matcher.group(1) + '.' + matcher.group(2) + '.' + prettyMethod(matcher.group(3));
+                    sourcePointer = 'Apex:' + matcher.group(1) + '.' + matcher.group(2) + '.' + prettyMethod(matcher.group(3));
 				}
 				else {
                     //className.methodName
-                    sourcePointer = 'Apex - ' + matcher.group(1) + '.' + prettyMethod(matcher.group(2));
+                    sourcePointer = 'Apex:' + matcher.group(1) + '.' + prettyMethod(matcher.group(2));
 				}
 				//Line Number
                 sourcePointer += '#' + String.valueOf(matcher.group(4));
