@@ -24,6 +24,10 @@
         <members>LogEntry__c</members>
         <name>CustomTab</name>
     </types>
+     <types>
+        <members>Log_Monitor_UtilityBar</members>
+        <name>FlexiPage</name>
+    </types>
     <types>
         <members>Log_Monitor</members>
         <name>CustomApplication</name>

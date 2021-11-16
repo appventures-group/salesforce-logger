@@ -1,3 +1,4 @@
-MasterLabel,DeveloperName,LogLevel__c,LogViaEvents__c,LogViaObject__c,LogViaSystemDebug__c,Mute__c
-System Default,System,DEBUG,true,true,true,false
-UserID_89734982379827,System,DEBUG,true,true,true,false
+MasterLabel,DeveloperName,LogLevel__c,WriteToEvent__c,WriteToObject__c,WriteToSystemDebug__c,Mute__c,RetentionPeriodInDays__c
+System Default,System,DEBUG,true,true,true,false,7
+ProfileId_89734982379827,System,DEBUG,true,true,true,false,0
+UserId_JDASKEr98797ah,System,DEBUG,true,true,true,false,0
