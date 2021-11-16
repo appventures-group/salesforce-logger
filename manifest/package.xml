@@ -27,6 +27,7 @@
     </types>
      <types>
         <members>Log_Monitor_UtilityBar</members>
+        <members>Log_Monitor</members>
         <name>FlexiPage</name>
     </types>
     <types>
