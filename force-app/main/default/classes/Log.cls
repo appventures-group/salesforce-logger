@@ -121,9 +121,9 @@ public without sharing class Log {
         }
         muteFlush = false;
         mute = logSettings != null ? logSettings.Mute__c : false;
-        writeToEvent = logSettings != null ? logSettings.writeToEvent__c : false;
-        writeToObject = logSettings != null ? logSettings.writeToObject__c : false;
-        writeToSystemDebug = logSettings != null ? logSettings.writeToSystemDebug__c : true;
+        writeToEvent = logSettings != null ? logSettings.WriteToEvent__c : false;
+        writeToObject = logSettings != null ? logSettings.WriteToObject__c : false;
+        writeToSystemDebug = logSettings != null ? logSettings.WriteToSystemDebug__c : true;
         //Note - Finest log level enables it to reach system debug.
         currentLogLevel = logSettings != null ? LoggingLevel.valueOf(logSettings.LogLevel__c) : LoggingLevel.FINEST; 
     }
