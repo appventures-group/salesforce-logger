@@ -1,5 +1,10 @@
 # Salesforce Logger [![Codacy Badge](https://app.codacy.com/project/badge/Grade/4a1dd9a074e74d728503b6c56176df8e)](https://www.codacy.com/gh/vbattula/salesforce-logger/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vbattula/salesforce-logger&amp;utm_campaign=Badge_Grade)
 
+<a href="https://githubsfdeploy.herokuapp.com?owner=vbattula&repo=salesforce-logger&ref=master">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
 A lightweght logging framework for Salesforce platform with ability to log to multiple streams (custom object, platform event, system debug) supporting all salesforce LoggingLevels. Framework provides ability to enable logging at system, profile and individual user level to be able to collect logs from environments with heavy load to be able to debug the functionality. Log entries can be made with any declarative tools support invocable action (any declarative tool runs on Flow infrastructure) in addition to apex.
 
 ## Emulates System.debug

@@ -90,7 +90,9 @@ export default class LogMonitor extends LightningElement {
 
 
     unsubscribe() {
-        unsubscribe(this.subscription, response => {});
+        unsubscribe(this.subscription, response => {
+            console.log('unsubscribe() response: ', JSON.stringify(response));
+        });
     }
 
 
@@ -115,16 +117,18 @@ export default class LogMonitor extends LightningElement {
         this.logsAsTree = [];
 
         for(const RequestId__c in this.logs) {
-            let log = this.logs[RequestId__c][0];
-            log.index = index;
-            log.RequestId__c = RequestId__c; 
+            if(this.logs.hasOwnProperty(RequestId__c)) {
+                let log = this.logs[RequestId__c][0];
+                log.index = index;
+                log.RequestId__c = RequestId__c; 
 
-            if(this.logs[RequestId__c].length > 1) {
-                log._children = this.logs[RequestId__c].slice(1);
+                if(this.logs[RequestId__c].length > 1) {
+                    log._children = this.logs[RequestId__c].slice(1);
+                }
+
+                this.logsAsTree.push(log);
+                index++;
             }
-
-            this.logsAsTree.push(log);
-            index++;
         }
 
         this.template
