@@ -5,7 +5,7 @@
       "default": true
     }
   ],
-  "name": "GSP Core Foundation ",
+  "name": "Salesforce Logger",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "52.0"
