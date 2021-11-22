@@ -1,12 +1,18 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "salesforce_logger",
+            "versionName": "Version 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "Salesforce Logger",
+    "namespace": "vba_de",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "52.0",
+    "packageAliases": {
+        "salesforce_logger": "0Ho8d0000004CBYCA2"
     }
-  ],
-  "name": "GSP Core Foundation ",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "52.0"
 }

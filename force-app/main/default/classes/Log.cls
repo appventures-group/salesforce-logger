@@ -104,6 +104,7 @@ public without sharing class Log {
         }
         if(listOfLogEvents.size() > 0) { EventBus.publish(listOfLogEvents); }
         if(listOfLogEntryObjects.size() > 0) { insert listOfLogEntryObjects; }
+        logEntries.clear();
     }
     /**
      * Reads the MDT settings for current user if found and sets the log levels. If not found
@@ -137,22 +138,20 @@ public without sharing class Log {
 		List<String> stacktrace = new DmlException().getStackTraceString().split('\n');
 		for(String line : stacktrace) {
 			Matcher matcher = STACK_LINE.matcher(line);
-			if(matcher.find() && !line.startsWith('Class.Log.') && !line.startsWith('Class.Logger.')) {
+            matcher.find();
+			//if(matcher.find() && !line.startsWith('Class.Log.') && !line.startsWith('Class.Logger.')) {
 				Boolean hasNamespace = String.isNotBlank(matcher.group(3));
-				if(hasNamespace) {
-                    //namespace.className.methodName
-                    sourcePointer = 'Apex:' + matcher.group(1) + '.' + matcher.group(2) + '.' + prettyMethod(matcher.group(3));
+				if(hasNamespace && !matcher.group(2).equals('Log') && !matcher.group(2).equals('Logger')) {
+                    //namespace.className.methodName#LineNumber
+                    return 'Apex:' + matcher.group(1) + '.' + matcher.group(2) + '.' + prettyMethod(matcher.group(3)) + '#' + String.valueOf(matcher.group(4));
 				}
-				else {
-                    //className.methodName
-                    sourcePointer = 'Apex:' + matcher.group(1) + '.' + prettyMethod(matcher.group(2));
+                if(!hasNamespace && !matcher.group(1).equals('Log') && !matcher.group(1).equals('Logger')) {
+                    //className.methodName#LineNumber
+                    return  'Apex:' + matcher.group(1) + '.' + prettyMethod(matcher.group(2)) + '#' + String.valueOf(matcher.group(4));
 				}
-				//Line Number
-                sourcePointer += '#' + String.valueOf(matcher.group(4));
-				return sourcePointer;
-			}
+			//}
 		}
-        return sourcePointer;
+        return 'UNKNOWN';
 	}
 
     /**

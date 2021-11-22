@@ -1,4 +1,4 @@
-import { LightningElement } from "lwc";
+import { LightningElement, track } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { subscribe, unsubscribe, onError } from "lightning/empApi";
 import userId from "@salesforce/user/Id";
@@ -8,6 +8,9 @@ export default class LogMonitor extends LightningElement {
     subscription;
     isMuted = false;
     logs = {};
+    @track eventChannelName = "/event/Log__e";
+    @track channelReadOnly = false;
+    @track cssClassName = "slds-theme_shade";
 
     logsAsTree = [];
     columns = [
@@ -77,7 +80,7 @@ export default class LogMonitor extends LightningElement {
 
 
     async subscribe() {
-        this.subscription = await subscribe("/event/Log__e", -1, (message) => this.receive(message));
+        this.subscription = await subscribe(this.eventChannelName, -1, (message) => this.receive(message));
         onError(error => {
             this.dispatchEvent( new ShowToastEvent({
                 variant: "error",
@@ -85,7 +88,8 @@ export default class LogMonitor extends LightningElement {
                 message: JSON.stringify(error),
             }) );
         });
-        console.log()
+        this.channelReadOnly = true;
+        //this.cssClassName = "slds-theme_shade";
     }
 
 
@@ -93,6 +97,8 @@ export default class LogMonitor extends LightningElement {
         unsubscribe(this.subscription, response => {
             console.log('unsubscribe() response: ', JSON.stringify(response));
         });
+        this.channelReadOnly = false;
+        //this.cssClassName = "slds-theme_shade";
     }
 
 
@@ -138,6 +144,10 @@ export default class LogMonitor extends LightningElement {
 
     }
 
+    handleInputChange(event) {
+        this.eventChannelName = event.detail.value;
+    }
+
     toggleMute() {
         this.isMuted = !this.isMuted;
 
@@ -151,11 +161,14 @@ export default class LogMonitor extends LightningElement {
 
 
     get muteIcon() {
-        return (this.isMuted) ? "utility:volume_off" : "utility:volume_high";
+        return (this.isMuted) ? "utility:offline" : "utility:podcast_webinar";
     }
 
-    
     get muteLabel() {
-        return (this.isMuted) ? "Unmute" : "Mute";
+        return (this.isMuted) ? "Start Monitoring" : "Stop Monitoring";
+    }
+
+    get muteButtonVariant() {
+        return (this.isMuted) ? "border": "brand";
     }
 }
