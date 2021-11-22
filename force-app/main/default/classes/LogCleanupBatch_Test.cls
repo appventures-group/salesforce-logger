@@ -15,11 +15,11 @@ public with sharing class LogCleanupBatch_Test {
         Logger.finer('FINER Message');
         Logger.finest('FINEST Message');
 
-        Test.startTest();
+        System.Test.startTest();
         
         Integer numDays = 0;
         LogCleanupBatch b = new LogCleanupBatch(numDays);
-        database.executebatch(b, 2000);
+        Database.executeBatch(b, 2000);
         System.assertEquals(1, 1, 'This just adds test coverage, and never fails');
 
 
@@ -28,7 +28,7 @@ public with sharing class LogCleanupBatch_Test {
         CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobId];
         System.assertEquals(CRON_EXP, ct.CronExpression, 'Cron expression did not match');
         System.assertEquals(0, ct.TimesTriggered, 'Cron jobs triggered did not match');
-   
-        Test.stopTest();
+
+        System.Test.stopTest();
     }
 }
