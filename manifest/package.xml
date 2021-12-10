@@ -35,6 +35,7 @@
         <name>FlexiPage</name>
     </types>
         <types>
+        <members>LogEntry__c-Log Layout</members>
         <members>LogSetting__mdt-LogSetting Layout</members>
         <name>Layout</name>
     </types>

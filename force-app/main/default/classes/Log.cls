@@ -61,7 +61,8 @@ public without sharing class Log {
         newLogEntry.put('Quiddity__c', Request.getCurrent().getQuiddity().name());
         newLogEntry.put('RequestId__c', Request.getCurrent().getRequestId());
         newLogEntry.put('Message__c', String.valueOf(message));
-        newLogEntry.put('Source__c', source == null? getSourcePointer() : source);
+        newLogEntry.put('StackTrace__c', source == null?  getStackTraceString(): null);
+        newLogEntry.put('Source__c', source == null? getSourcePointer((String)newLogEntry.get('StackTrace__c')) : source);
         newLogEntry.put('CreatedTime__c', System.now());
         logEntries.add(newLogEntry);
 	}
@@ -86,6 +87,7 @@ public without sharing class Log {
                     Quiddity__c = (String)cEntry.get('Quiddity__c'),
                     RequestId__c = (String)cEntry.get('RequestId__c'),
                     Message__c = (String)cEntry.get('Message__c'),
+                    StackTrace__c = (String)cEntry.get('StackTrace__c'),
                     Source__c = (String)cEntry.get('Source__c'),
                     CreatedTime__c = (DateTime)cEntry.get('CreatedTime__c')
                 ));
@@ -98,6 +100,7 @@ public without sharing class Log {
                     RequestId__c = (String)cEntry.get('RequestId__c'),
                     Message__c = (String)cEntry.get('Message__c'),
                     Source__c = (String)cEntry.get('Source__c'),
+                    StackTrace__c = (String)cEntry.get('StackTrace__c'),
                     CreatedTime__c = (DateTime)cEntry.get('CreatedTime__c')
                 ));
             }
@@ -128,14 +131,24 @@ public without sharing class Log {
         //Note - Finest log level enables it to reach system debug.
         currentLogLevel = logSettings != null ? LoggingLevel.valueOf(logSettings.LogLevel__c) : LoggingLevel.FINEST; 
     }
+    /**
+     * Returns the Apex stack trace
+     */
+    private String getStackTraceString() {
+        String stackTraceString = new DmlException().getStackTraceString();
+        if (stackTraceString.length() > 5000) {
+            stackTraceString = stackTraceString.substring(0, 5000);
+        }
+        return stackTraceString;
+    }
     /** 
      * This extracts code information to populate in the log object.
      */ 
-	private String getSourcePointer() {
+	private String getSourcePointer(String stackStraceString) {
 		// Note: Idea taken from https://salesforce.stackexchange.com/questions/153835
         String sourcePointer = 'UNKNOWN';
         Map<String, Object> codeDetails =  new Map<String, Object>();
-		List<String> stacktrace = new DmlException().getStackTraceString().split('\n');
+		List<String> stacktrace = stackStraceString.split('\n');
 		for(String line : stacktrace) {
 			Matcher matcher = STACK_LINE.matcher(line);
             matcher.find();
