@@ -1,8 +1,12 @@
 {
     "packageDirectories": [
         {
-            "path": "force-app",
+            "path": "src/packaged",
             "default": true
+        },
+        {
+            "path": "src/unpackaged",
+            "default": false
         }
     ],
     "name": "Salesforce Logger",
