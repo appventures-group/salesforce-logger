@@ -3,6 +3,7 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <identifier>logMonitorId</identifier>
                 <componentName>logMonitor</componentName>
             </componentInstance>
         </itemInstances>

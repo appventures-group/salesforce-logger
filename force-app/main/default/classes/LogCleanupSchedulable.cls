@@ -14,6 +14,6 @@ public without sharing class LogCleanupSchedulable implements Schedulable {
             }
         }
         LogCleanupBatch b = new LogCleanupBatch(numDays);
-        database.executebatch(b,2000);
+        Database.executeBatch(b,2000);
     }
 }

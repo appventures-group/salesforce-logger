@@ -4,9 +4,7 @@
     <columns>DeveloperName</columns>
     <columns>MasterLabel</columns>
     <columns>LogLevel__c</columns>
-    <columns>Mute__c</columns>
     <columns>WriteToEvent__c</columns>
-    <columns>WriteToObject__c</columns>
     <columns>WriteToSystemDebug__c</columns>
     <columns>RetentionPeriodInDays__c</columns>
     <filterScope>Everything</filterScope>

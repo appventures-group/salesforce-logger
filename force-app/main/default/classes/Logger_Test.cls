@@ -5,24 +5,25 @@
 public with sharing class Logger_Test {
     @IsTest
 	private static void testAllLogLevels() {
+        Test.startTest();
         Logger.error('ERROR Message');
         Logger.warn('WARN Message');
         Logger.info('INFO Message');
         Logger.debug('DEBUG Message');
-        Logger.pause();
         Logger.debug('This will not be logged');
         Logger.fine('This will not be logged');
-        Logger.resume();
         Logger.fine('FINE Message');
         Logger.finer('FINER Message');
         Logger.finest('FINEST Message');
+        Logger.exception(new IllegalArgumentException('blah'));
+        Test.stopTest();
         
         Integer logCount = [SELECT COUNT() FROM LogEntry__c];
         Integer expectedLogCount = 0;
         LoggingLevel currentLogLevel = Logger.getCurrentLogLevel();
         switch on currentLogLevel {
             when ERROR {
-                expectedLogCount = 1;
+                expectedLogCount = 2;
             }
             when WARN {
                 expectedLogCount = 2;
