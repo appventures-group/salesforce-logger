@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Log_Monitor</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <description>Additional permissions to manage log entries through the Salesforce Logger application.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Salesforce Logger Management</label>
+</PermissionSet>
