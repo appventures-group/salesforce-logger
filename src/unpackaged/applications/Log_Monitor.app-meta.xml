@@ -9,9 +9,10 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
     <label>Log Monitor</label>
     <navType>Standard</navType>
-    <tabs>Log_Monitor</tabs>
     <tabs>LogEntry__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Log_Monitor_UtilityBar</utilityBar>
