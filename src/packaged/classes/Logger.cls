@@ -5,28 +5,31 @@
 @SuppressWarnings('PMD.AvoidGlobalModifier')
 public without sharing class Logger {
     public static void error(Object message) {
-        Log.me().log(LoggingLevel.ERROR, message, null);
+        Log.me().log(LoggingLevel.ERROR, message, null, false);
 	}
     public static void warn(Object message) {
-        Log.me().log(LoggingLevel.WARN, message, null);
+        Log.me().log(LoggingLevel.WARN, message, null, false);
 	}
     public static void info(Object message) {
-        Log.me().log(LoggingLevel.INFO, message, null);
+        Log.me().log(LoggingLevel.INFO, message, null, false);
 	}
 	public static void debug(Object message) {
-        Log.me().log(LoggingLevel.DEBUG, message, null);
+        Log.me().log(LoggingLevel.DEBUG, message, null, false);
 	}
     public static void fine(Object message) {
-        Log.me().log(LoggingLevel.FINE, message, null);
+        Log.me().log(LoggingLevel.FINE, message, null, false);
 	}
     public static void finer(Object message) {
-        Log.me().log(LoggingLevel.FINER, message, null);
+        Log.me().log(LoggingLevel.FINER, message, null, false);
 	}
     public static void finest(Object message) {
-        Log.me().log(LoggingLevel.FINEST, message, null);
+        Log.me().log(LoggingLevel.FINEST, message, null, false);
 	}
     public static void exception(Exception ex) {
         error(ex);
+    }
+    public static void flush() {
+        Log.me().flush();
     }
 	
     //Returns the current loggin level.

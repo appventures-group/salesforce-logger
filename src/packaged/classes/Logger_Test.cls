@@ -16,6 +16,7 @@ public with sharing class Logger_Test {
         Logger.finer('FINER Message');
         Logger.finest('FINEST Message');
         Logger.exception(new IllegalArgumentException('blah'));
+        Logger.flush();
         Test.stopTest();
         
         Integer logCount = [SELECT COUNT() FROM LogEntry__c];

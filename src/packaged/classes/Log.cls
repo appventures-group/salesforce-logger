@@ -15,13 +15,14 @@ public without sharing class Log {
     private final List<Map<String,Object>> logEntries = new List<Map<String,Object>>();
 
     // Logger dynamic controls
-    public Boolean mute {get; set;}
-    public Boolean muteFlush {get; set;}
     public LoggingLevel currentLogLevel {get; set;}
 
     // Flags to control where to write logs
     private Boolean writeToEvent {get; set;}
     private Boolean writeToSystemDebug {get; set;}
+
+    // List of events to fire when logging is finished
+    private List<Log__e> events = new List<Log__e>();
 
     // Constructor to load log settings
     public Log() {
@@ -34,8 +35,9 @@ public without sharing class Log {
      * @param level The logging level.
      * @param message The log message.
      * @param source The source of the log entry.
+     * @param immediate If true, fires the event immediately
      */
-    public void log(LoggingLevel level, Object message, String source) { // TODO: either remove the push or emit method
+    public void log(LoggingLevel level, Object message, String source, Boolean immediate) { // TODO: either remove the push or emit method
         // Log to System Debug, when enabled.
         if (writeToSystemDebug) {
             System.debug(level, message);
@@ -47,19 +49,35 @@ public without sharing class Log {
         }
 
         if (writeToEvent) {
-            LoggerStackTrace stackTrace = new LoggerStackTrace(getStackTraceString());
-            EventBus.publish(new Log__e(
+            LoggerStackTrace stackTrace;
+            String messageValue;
+            if (message instanceof Exception) {
+                stackTrace = new LoggerStackTrace((Exception)message);
+                messageValue = ((Exception)message).getMessage();
+            } else {
+                stackTrace = new LoggerStackTrace();
+                messageValue = String.valueOf(message);
+            }
+            events.add(new Log__e(
                     User__c = UserInfo.getUserId(),
                     Level__c = level.name(),
-                    Quiddity__c = Request.getCurrent().getQuiddity().name(),
+                    Quiddity__c = stackTrace.Source.MetadataType.name(),
                     RequestId__c = Request.getCurrent().getRequestId(),
-                    Message__c = String.valueOf(message), // TODO: check how to log the exception message better
+                    Message__c = messageValue,
                     StackTrace__c = stackTrace?.ParsedStackTraceString,
                     Source__c = source != null ? source : stackTrace?.Source.ApiName,
                     Line__c = stackTrace?.Source?.LineNumber,
                     Method__c = stackTrace?.Source?.ActionName
             ));
         }
+        if (immediate) {
+            flush();
+        }
+    }
+
+    public void flush() {
+        EventBus.publish(events);
+        events = new List<Log__e>();
     }
 
     /**
@@ -78,19 +96,6 @@ public without sharing class Log {
         writeToEvent = logSettings != null ? logSettings.WriteToEvent__c : false;
         writeToSystemDebug = logSettings != null ? logSettings.WriteToSystemDebug__c : true;
         currentLogLevel = logSettings != null ? LoggingLevel.valueOf(logSettings.LogLevel__c) : LoggingLevel.FINEST;
-    }
-
-    /**
-     * Returns the Apex stack trace.
-     *
-     * @return The stack trace string.
-     */
-    private String getStackTraceString() {
-        String stackTraceString = new DmlException().getStackTraceString();
-        if (stackTraceString.length() > 5000) {
-            stackTraceString = stackTraceString.substring(0, 5000); // TODO: why 5000?
-        }
-        return stackTraceString;
     }
 
     /**

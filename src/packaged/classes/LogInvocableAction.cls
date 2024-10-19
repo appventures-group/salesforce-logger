@@ -14,7 +14,7 @@ public with sharing class LogInvocableAction {
     @InvocableMethod(Label='Create a Log Entry'
             Description='Creates a log entry. Use for example in error handling.')
     public static void makeLogEntry(List<Request> requestList) {
-        Log.me().log(LoggingLevel.valueOf(requestList[0].level), requestList[0].message, requestList[0].source);
+        Log.me().log(LoggingLevel.valueOf(requestList[0].level), requestList[0].message, requestList[0].source, true);
     }
 
     /**
